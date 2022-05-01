@@ -9,6 +9,8 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.time.LocalDateTime;
+
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TelegramFacade {
@@ -24,7 +26,7 @@ public class TelegramFacade {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(String.valueOf(message.getChatId()));
             if (message.hasText()) {
-                sendMessage.setText("Hello world");
+                sendMessage.setText(LocalDateTime.now().toString());
                 return sendMessage;
             }
         }
