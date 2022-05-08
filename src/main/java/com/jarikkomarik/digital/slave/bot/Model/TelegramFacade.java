@@ -9,6 +9,8 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 
 @Component
@@ -27,6 +29,17 @@ public class TelegramFacade {
             sendMessage.setChatId(String.valueOf(message.getChatId()));
             if (message.hasText()) {
                 sendMessage.setText(LocalDateTime.now().toString());
+
+                Audio_Demo trying_different_languages = new Audio_Demo();
+                trying_different_languages.synthesizer.setLanguage("ru-RU");
+                InputStream audioData = null;
+                try {
+                    audioData = trying_different_languages.synthesizer.getMP3Data(message.getText());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                trying_different_languages.speak(audioData);
+
                 return sendMessage;
             }
         }
