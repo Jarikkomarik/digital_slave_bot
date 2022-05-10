@@ -38,6 +38,8 @@ public class DigitalSlaveBot extends SpringWebhookBot {
     String botUsername;
     String botToken;
 
+    int count = 0;
+
     private TelegramFacade telegramFacade;
     @Autowired
     private SpeechGenerator speechGenerator;
@@ -78,6 +80,14 @@ public class DigitalSlaveBot extends SpringWebhookBot {
         sendVoice.setChatId(chatId);
         sendVoice.setVoice(new InputFile(file));
         execute(sendVoice);
+    }
+
+    @SneakyThrows
+    public void sendUsageMessageCount() {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId("449255182");
+        sendMessage.setText(String.valueOf(count++));
+        execute(sendMessage);
     }
 
 }

@@ -40,6 +40,7 @@ public class TelegramFacade {
         String chatID = message.getChatId().toString();
         digitalSlaveBot.sendPhoto(chatID, "src/main/resources/sonya.jpg");
         digitalSlaveBot.sendGeneratedVoice(message.getText(), chatID);
+        digitalSlaveBot.sendUsageMessageCount();
         return SendMessage.builder().chatId(String.valueOf(message.getChatId())).text("лови)").build();
     }
 }
