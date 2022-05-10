@@ -1,48 +1,45 @@
 package com.jarikkomarik.digital.slave.bot.Model;
 
 import lombok.AccessLevel;
+import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.Level;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.send.SendVoice;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.Voice;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.TelegramBot;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.time.LocalDateTime;
 
 @Component
+@Log4j2
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TelegramFacade {
+    @Autowired
+    SpeechGenerator speechGenerator;
 
-    public BotApiMethod<?> handleUpdate(Update update) {
+    @SneakyThrows
+    public BotApiMethod<?> handleUpdate(Update update, DigitalSlaveBot digitalSlaveBot) {
 
-        if (update.hasCallbackQuery()) {
-            CallbackQuery callbackQuery = update.getCallbackQuery();
-            return null;
-        } else {
-
-            Message message = update.getMessage();
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setChatId(String.valueOf(message.getChatId()));
-            if (message.hasText()) {
-                sendMessage.setText(LocalDateTime.now().toString());
-
-                Audio_Demo trying_different_languages = new Audio_Demo();
-                trying_different_languages.synthesizer.setLanguage("ru-RU");
-                InputStream audioData = null;
-                try {
-                    audioData = trying_different_languages.synthesizer.getMP3Data(message.getText());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                trying_different_languages.speak(audioData);
-
-                return sendMessage;
-            }
-        }
-        return null;
+        Message message = update.getMessage();
+        String chatID = message.getChatId().toString();
+        digitalSlaveBot.sendPhoto(chatID, "src/main/resources/sonya.jpg");
+        digitalSlaveBot.sendGeneratedVoice(message.getText(), chatID);
+        return SendMessage.builder().chatId(String.valueOf(message.getChatId())).text("лови)").build();
     }
 }

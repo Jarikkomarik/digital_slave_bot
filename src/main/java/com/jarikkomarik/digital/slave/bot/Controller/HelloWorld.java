@@ -1,4 +1,4 @@
-package com.jarikkomarik.digital.slave.bot.Model;
+package com.jarikkomarik.digital.slave.bot.Controller;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
