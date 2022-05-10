@@ -83,10 +83,10 @@ public class DigitalSlaveBot extends SpringWebhookBot {
     }
 
     @SneakyThrows
-    public void sendUsageMessageCount() {
+    public void sendUsageMessageCount(int usersCount) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId("449255182");
-        sendMessage.setText(String.valueOf(count++));
+        sendMessage.setText("Users count: " + usersCount +" Message count: " +count++);
         execute(sendMessage);
     }
 

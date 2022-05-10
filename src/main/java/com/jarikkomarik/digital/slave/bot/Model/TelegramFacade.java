@@ -46,7 +46,7 @@ public class TelegramFacade {
         if(sayHiToNewUser(chatID, digitalSlaveBot)) {
             digitalSlaveBot.sendPhoto(chatID, "src/main/resources/sonya.jpg");
             digitalSlaveBot.sendGeneratedVoice(message.getText(), chatID);
-            digitalSlaveBot.sendUsageMessageCount();
+            digitalSlaveBot.sendUsageMessageCount(usersSet.size());
             return SendMessage.builder().chatId(String.valueOf(message.getChatId())).text("лови)").build();
         } else {
             return null;
