@@ -25,6 +25,8 @@ import org.telegram.telegrambots.meta.generics.TelegramBot;
 
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @Log4j2
@@ -33,14 +35,34 @@ public class TelegramFacade {
     @Autowired
     SpeechGenerator speechGenerator;
 
+    Set<String> usersSet = new HashSet<>();
+
     @SneakyThrows
     public BotApiMethod<?> handleUpdate(Update update, DigitalSlaveBot digitalSlaveBot) {
 
         Message message = update.getMessage();
         String chatID = message.getChatId().toString();
-        digitalSlaveBot.sendPhoto(chatID, "src/main/resources/sonya.jpg");
-        digitalSlaveBot.sendGeneratedVoice(message.getText(), chatID);
-        digitalSlaveBot.sendUsageMessageCount();
-        return SendMessage.builder().chatId(String.valueOf(message.getChatId())).text("лови)").build();
+
+        if(sayHiToNewUser(chatID, digitalSlaveBot)) {
+            digitalSlaveBot.sendPhoto(chatID, "src/main/resources/sonya.jpg");
+            digitalSlaveBot.sendGeneratedVoice(message.getText(), chatID);
+            digitalSlaveBot.sendUsageMessageCount();
+            return SendMessage.builder().chatId(String.valueOf(message.getChatId())).text("лови)").build();
+        } else {
+            return null;
+        }
+    }
+
+    @SneakyThrows
+    private boolean sayHiToNewUser(String chatID, DigitalSlaveBot digitalSlaveBot) {
+        if(!usersSet.contains(chatID)) {
+            digitalSlaveBot.sendMessage(chatID, "Привет\uD83E\uDD1A\n" +
+                    "Я умею генерировать аудио из твоих сообщений \uD83E\uDD16 \n" +
+                    "Пиши текст, а я пошлю тебе аудио \uD83C\uDFA4 ");
+            usersSet.add(chatID);
+            return false;
+        } else {
+            return true;
+        }
     }
 }
