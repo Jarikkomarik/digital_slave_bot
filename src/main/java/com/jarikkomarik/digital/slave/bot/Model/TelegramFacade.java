@@ -43,8 +43,8 @@ public class TelegramFacade {
         Message message = update.getMessage();
         String chatID = message.getChatId().toString();
 
-        if(sayHiToNewUser(chatID, digitalSlaveBot)) {
-            digitalSlaveBot.sendPhoto(chatID, "src/main/resources/sonya.jpg");
+        if(sayHiToNewUser(chatID, digitalSlaveBot)&& message.hasText()) {
+            //digitalSlaveBot.sendPhoto(chatID, "src/main/resources/sonya.jpg");
             digitalSlaveBot.sendGeneratedVoice(message.getText(), chatID);
             digitalSlaveBot.sendUsageMessageCount(usersSet.size());
             return SendMessage.builder().chatId(String.valueOf(message.getChatId())).text("лови)").build();
