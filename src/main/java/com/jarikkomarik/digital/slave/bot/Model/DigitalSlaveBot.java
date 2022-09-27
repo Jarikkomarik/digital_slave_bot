@@ -67,10 +67,10 @@ public class DigitalSlaveBot extends SpringWebhookBot {
         replyKeyboardMarkup.setResizeKeyboard(true);
 
 
-        execute(SendMessage.builder().chatId(chatID).text("Привет\uD83E\uDD1A\n" +
-                "Я умею генерировать аудио из твоих сообщений \uD83E\uDD16 \n" +
-                "Пиши текст, а я пошлю тебе аудио \uD83C\uDFA4\n" +
-                "\n" + "Для начала выбери язык \uD83D\uDD24").replyMarkup(replyKeyboardMarkup).build());
+        execute(SendMessage.builder().chatId(chatID).text("Hi\uD83E\uDD1A\n" +
+                "I can generate audio from your messages \uD83E\uDD16 \n" +
+                "Send text, and I will send you Audio \uD83C\uDFA4\n" +
+                "\n" + "Pick a language to start \uD83D\uDD24").replyMarkup(replyKeyboardMarkup).build());
     }
 
     public void sendMessage(String chatId, String messageText) throws TelegramApiException{
@@ -81,26 +81,26 @@ public class DigitalSlaveBot extends SpringWebhookBot {
     }
 
     public void sendAskForLangMessage(String chatId) throws TelegramApiException {
-        sendMessage(chatId, "Язык не был задан, \nпожалуйста выберите язык из клавиатуры");
+        sendMessage(chatId, "Language is not set, \nplease pick language from keyboard");
     }
 
     public void sendUpdateMessage(String chatId, Language language) throws TelegramApiException {
         String languagePostfix = null;
         switch (language) {
             case EN:
-                languagePostfix = "Английский \uD83C\uDDEC\uD83C\uDDE7";
+                languagePostfix = "English \uD83C\uDDEC\uD83C\uDDE7";
                 break;
             case UA:
-                languagePostfix = "Украинский \uD83C\uDDFA\uD83C\uDDE6";
+                languagePostfix = "Ukrainian \uD83C\uDDFA\uD83C\uDDE6";
                 break;
             case RU:
-                languagePostfix = "Русский \uD83C\uDDF7\uD83C\uDDFA";
+                languagePostfix = "Russian \uD83C\uDDF7\uD83C\uDDFA";
                 break;
             case JP:
-                languagePostfix = "Японский \uD83C\uDDEF\uD83C\uDDF5";
+                languagePostfix = "Japanese \uD83C\uDDEF\uD83C\uDDF5";
                 break;
         }
-        sendMessage(chatId, "Выбран " + languagePostfix + " язык.");
+        sendMessage(chatId, "Picked " + languagePostfix + " language.");
     }
 
     @SneakyThrows
